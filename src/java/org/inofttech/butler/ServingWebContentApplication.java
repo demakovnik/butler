@@ -1,5 +1,6 @@
 package org.inofttech.butler;
 
+import org.inofttech.butler.entity.DeviceType;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

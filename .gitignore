@@ -3,3 +3,6 @@ devices
 users
 out
 .idea
+database
+.db
+target
