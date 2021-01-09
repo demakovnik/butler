@@ -10,7 +10,7 @@
 <form action="#" th:action="@{/addDevice}" th:object="${device}" method="post">
     <p>Link address: <input type="text" th:field="*{linkAddress}" /></p>
     <p>Type of Device: <select name="type" th:field="*{deviceType}">
-        <option th:each="typeOpt : ${T(com.inofttech.butler.entity.DeviceType).values()}"
+        <option th:each="typeOpt : ${T(org.inofttech.butler.entity.DeviceType).values()}"
                 th:value="${typeOpt.name()}" th:text="${typeOpt.getText()}"></option>
     </select>
     </p>
