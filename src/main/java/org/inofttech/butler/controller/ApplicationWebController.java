@@ -26,7 +26,7 @@ public class ApplicationWebController {
     @PostMapping("/addDevice")
     public String addNewDevice(@ModelAttribute Device device, Model model) {
         try {
-            deviceService.saveDevice(device);
+            deviceService.save(device);
 
             model.addAttribute("message", "Device with Model Serial Number: " + device.getModelNumber()
                     + " and Device Type: " + device.getDeviceType().getText() + " is already added");

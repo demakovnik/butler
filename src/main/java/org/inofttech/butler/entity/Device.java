@@ -1,21 +1,16 @@
 package org.inofttech.butler.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "devices")
-public class Device {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+public class Device extends AbstractEntity implements Serializable {
 
     @Column(name = "link_address")
     private String linkAddress;
-
 
 
     @Enumerated(EnumType.STRING)
@@ -45,13 +40,7 @@ public class Device {
         this.description = description;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getLinkAddress() {
         return linkAddress;
@@ -106,8 +95,7 @@ public class Device {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Device device = (Device) o;
-        return id == device.id &&
-                Objects.equals(linkAddress, device.linkAddress) &&
+        return Objects.equals(linkAddress, device.linkAddress) &&
                 deviceType == device.deviceType &&
                 Objects.equals(modelNumber, device.modelNumber) &&
                 Objects.equals(description, device.description) &&
@@ -117,19 +105,6 @@ public class Device {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, linkAddress, deviceType, modelNumber, description, details, building);
-    }
-
-    @Override
-    public String toString() {
-        return "Device{" +
-                "id=" + id +
-                ", linkAddress='" + linkAddress + '\'' +
-                ", deviceType=" + deviceType +
-                ", modelNumber='" + modelNumber + '\'' +
-                ", description='" + description + '\'' +
-                ", details=" + details +
-                ", building=" + building +
-                '}';
+        return Objects.hash(linkAddress, deviceType, modelNumber, description, details, building);
     }
 }

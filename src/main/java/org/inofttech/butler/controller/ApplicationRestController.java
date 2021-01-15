@@ -1,6 +1,7 @@
 package org.inofttech.butler.controller;
 
 
+import org.inofttech.butler.controller.common.AbstractController;
 import org.inofttech.butler.entity.Device;
 import org.inofttech.butler.entity.DeviceType;
 import org.inofttech.butler.entity.TemporaryDeviceDetails;
@@ -18,10 +19,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/rest")
-public class ApplicationRestController {
+public class ApplicationRestController extends AbstractController<User, UserService> {
 
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private DeviceService deviceService;
@@ -29,45 +28,49 @@ public class ApplicationRestController {
     @Autowired
     private TemporaryDeviceDetailsService temporaryDeviceDetailsService;
 
+    public ApplicationRestController(UserService service) {
+        super(service);
+    }
+
     @GetMapping("/users")
     public List<User> showAllUsers() {
-        List<User> allUsers = userService.getAllUsers();
+        List<User> allUsers = service.getAll();
         return allUsers;
     }
 
     @GetMapping("/users/name/{name}")
     public User getUserByName(@PathVariable String name) {
-        User allUsersByName = userService.getUserByName(name);
+        User allUsersByName = service.getUserByName(name);
         return allUsersByName;
     }
 
     @GetMapping("/users/{id}")
-    public User getUser(@PathVariable int id) {
-        return userService.getUserById(id);
+    public User getUser(@PathVariable long id) {
+        return service.getById(id);
     }
 
     @PostMapping("/users")
     public User addNewUser(@RequestBody User user) {
-        userService.saveUser(user);
+        service.save(user);
         return user;
 
     }
 
     @PutMapping("/employees")
     public User updateUser(@RequestBody User user) {
-        userService.saveUser(user);
+        service.save(user);
         return user;
     }
 
     @DeleteMapping("/users/{id}")
     public String deleteUser(@PathVariable int id) {
-        userService.deleteUserById(id);
+        service.deleteById(id);
         return "User with ID= " + id + " was deleted";
     }
 
     @GetMapping("/devices")
     public List<Device> showAllDevices() {
-        return deviceService.getAllDevices();
+        return deviceService.getAll();
     }
 
     @GetMapping("/devices/type/{type}")
@@ -78,7 +81,7 @@ public class ApplicationRestController {
 
     @GetMapping("/devices/{id}")
     public Device getDevice(@PathVariable int id) {
-        Device device = deviceService.getDeviceById(id);
+        Device device = deviceService.getById(id);
 
         if (device == null) {
             throw new NoSuchItemException("There is no device with ID=" + id + " in database");
@@ -88,23 +91,23 @@ public class ApplicationRestController {
 
     @PostMapping("/devices")
     public Device addNewDevice(@RequestBody Device device) {
-        deviceService.saveDevice(device);
+        deviceService.save(device);
         return device;
     }
 
     @PutMapping("/devices")
     public Device updateDevice(@RequestBody Device device) {
-        deviceService.saveDevice(device);
+        deviceService.save(device);
         return device;
     }
 
     @DeleteMapping("/devices/{id}")
     public String deleteDevice(@PathVariable int id) {
-        Device device = deviceService.getDeviceById(id);
+        Device device = deviceService.getById(id);
         if (device == null) {
             throw new NoSuchItemException("There is no Device with ID = " + id + " in database");
         }
-        deviceService.deleteDeviceById(id);
+        deviceService.deleteById(id);
         return "Device with ID = " + id + " was deleted";
     }
 

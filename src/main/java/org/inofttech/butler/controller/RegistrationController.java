@@ -1,6 +1,8 @@
 package org.inofttech.butler.controller;
 
 
+import org.inofttech.butler.controller.common.AbstractController;
+import org.inofttech.butler.entity.User;
 import org.inofttech.butler.entity.to.UserDto;
 import org.inofttech.butler.exception.UserAlreadyExistException;
 import org.inofttech.butler.service.UserService;
@@ -20,13 +22,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
-public class RegistrationController {
+public class RegistrationController extends AbstractController<User, UserService> {
 
-    @Autowired
-    UserService userService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    public RegistrationController(UserService service) {
+        super(service);
+    }
 
     @RequestMapping("/login")
     String getLoginForm(@RequestParam(value = "error", required = false) String error,
@@ -54,7 +58,7 @@ public class RegistrationController {
                 userResponse.setErrorMessages(errors);
             } else {
                 userResponse.setValidated(true);
-                userService.saveUser(userDto);
+                service.save(userDto);
             }
         } catch (UserAlreadyExistException uaex) {
             Map<String, String> errors = new HashMap<>();
