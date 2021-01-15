@@ -26,17 +26,16 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User registerNewUserAccount(UserDto userDto) throws UserAlreadyExistException {
-        if (userRepository.findByUsername(userDto.getUsername()) != null) {
-            throw new UserAlreadyExistException(
-                    "There is an account with that login: "
-                            + userDto.getUsername());
+    public User saveUser(UserDto userDto) throws UserAlreadyExistException {
+        User user = null;
+        String username = userDto.getUsername();
+        if (!isUserExist(username)) {
+            user = new User();
+            user.setUsername(userDto.getUsername());
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            user.setActive(true);
+            user.setRoles(Collections.singleton(Role.USER));
         }
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setActive(true);
-        user.setRoles(Collections.singleton(Role.USER));
         return userRepository.save(user);
     }
 
@@ -49,13 +48,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(User user) {
         String username = user.getUsername();
-        User byUsername = userRepository.findByUsername(username);
-        if (byUsername != null) {
-            throw new UserAlreadyExistException("User with username " +
-                    username + " already exists in database");
+        if (!isUserExist(username)) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setActive(true);
+            user.setRoles(Collections.singleton(Role.USER));
+            userRepository.save(user);
         }
-
-        userRepository.save(user);
     }
 
     @Override
@@ -81,7 +79,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getgetUserByName(String username) {
+    public User getUserByName(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    private boolean isUserExist(String username) {
+        User byUsername = userRepository.findByUsername(username);
+        if (byUsername != null) {
+            throw new UserAlreadyExistException("User with username " +
+                    username + " is already exists in database");
+        }
+        return false;
     }
 }

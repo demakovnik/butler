@@ -37,7 +37,7 @@ public class ApplicationRestController {
 
     @GetMapping("/users/name/{name}")
     public User getUserByName(@PathVariable String name) {
-        User allUsersByName = userService.getgetUserByName(name);
+        User allUsersByName = userService.getUserByName(name);
         return allUsersByName;
     }
 

@@ -9,12 +9,12 @@ import org.inofttech.butler.exception.UserAlreadyExistException;
 import java.util.List;
 
 public interface UserService {
-    User registerNewUserAccount(UserDto userDto)
+    User saveUser(UserDto userDto)
             throws UserAlreadyExistException;
 
     public List<User> getAllUsers();
 
-    public User getgetUserByName(String username);
+    public User getUserByName(String username);
 
     public void saveUser(User user);
 

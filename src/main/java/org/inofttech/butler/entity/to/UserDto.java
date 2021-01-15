@@ -11,15 +11,15 @@ import javax.validation.constraints.NotNull;
 @FieldMatch(first = "matchingPassword", second = "password", message = "The password fields must match")
 public class UserDto {
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Field cannot be empty")
     private String username;
 
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Field cannot be empty")
     private String password;
 
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Field cannot be empty")
     public String matchingPassword;
 
 

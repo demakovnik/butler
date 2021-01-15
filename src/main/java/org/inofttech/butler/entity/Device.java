@@ -31,6 +31,10 @@ public class Device {
     @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
     private List<TemporaryDeviceDetails> details;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "building_id")
+    private Building building;
+
     public Device() {
     }
 
@@ -81,6 +85,22 @@ public class Device {
         this.description = description;
     }
 
+    public List<TemporaryDeviceDetails> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<TemporaryDeviceDetails> details) {
+        this.details = details;
+    }
+
+    public Building getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(Building building) {
+        this.building = building;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,12 +111,13 @@ public class Device {
                 deviceType == device.deviceType &&
                 Objects.equals(modelNumber, device.modelNumber) &&
                 Objects.equals(description, device.description) &&
-                Objects.equals(details, device.details);
+                Objects.equals(details, device.details) &&
+                Objects.equals(building, device.building);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, linkAddress, deviceType, modelNumber, description, details);
+        return Objects.hash(id, linkAddress, deviceType, modelNumber, description, details, building);
     }
 
     @Override
@@ -107,6 +128,8 @@ public class Device {
                 ", deviceType=" + deviceType +
                 ", modelNumber='" + modelNumber + '\'' +
                 ", description='" + description + '\'' +
+                ", details=" + details +
+                ", building=" + building +
                 '}';
     }
 }
