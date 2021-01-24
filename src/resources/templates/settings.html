@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Settings</title>
+</head>
+
+<body>
+<div class="container">
+    <div th:insert="~{fragments/navbar}"></div>
+</div>
+<div class="container">
+    <a href="/addArea" class="btn btn-primary btn-sm stretched-link">Add Area</a>
+    <p th:text="${message}"/>
+    <span th:if="${errorMessage}" th:text="${errorMessage}"></span>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Address</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="area: ${allAreas}">
+            <th scope="row" th:text="${allAreas.indexOf(area)}+1"></th>
+            <td th:text="${area.address}+' ('+${area.description}+')'"></td>
+            <td>
+                <form action="/getArea" method="post">
+                    <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input th:name="id" type="hidden" th:value="${area.getId()}"/>
+                    <button type="submit" class="btn btn-primary btn-sm stretched-link">Edit</button>
+                </form>
+            </td>
+            <td>
+                <form action="/deleteArea" method="post">
+                    <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input th:name="id" type="hidden" th:value="${area.getId()}"/>
+                    <button type="submit" class="btn btn-danger btn-sm stretched-link">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

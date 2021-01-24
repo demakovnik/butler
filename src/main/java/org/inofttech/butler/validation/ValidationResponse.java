@@ -2,9 +2,9 @@ package org.inofttech.butler.validation;
 
 import java.util.Map;
 
-public class UserResponse {
-    private boolean validated;
-    private Map<String, String> errorMessages;
+public class ValidationResponse {
+    protected boolean validated;
+    protected Map<String, String> errorMessages;
 
     public boolean isValidated() {
         return validated;

@@ -1,47 +1,42 @@
-package org.inofttech.butler.entity;
+package org.inofttech.butler.entity.to;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import org.inofttech.butler.entity.Building;
+import org.inofttech.butler.entity.DeviceType;
+import org.inofttech.butler.entity.TemporaryDeviceDetails;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
-@Table(name = "devices")
-public class Device extends AbstractEntity {
-
-    @Column(name = "link_address")
+public class DeviceDto {
+    @NotNull
+    @NotEmpty
     private String linkAddress;
 
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "device_type")
     private DeviceType deviceType;
 
-    @Column(name = "model_number")
+    @NotNull
+    @NotEmpty(message = "Field must not be empty")
     private String modelNumber;
 
-    @Column(name = "description")
     private String description;
 
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TemporaryDeviceDetails> details;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "building_id")
     private Building building;
 
-    public Device() {
-    }
-
-    public Device(String linkAddress, DeviceType deviceType, String modelNumber, String description) {
+    public DeviceDto(String linkAddress, DeviceType deviceType, String modelNumber, String description) {
         this.linkAddress = linkAddress;
         this.deviceType = deviceType;
         this.modelNumber = modelNumber;
         this.description = description;
+        details = new ArrayList<>();
     }
 
+    public DeviceDto() {
+    }
 
     public String getLinkAddress() {
         return linkAddress;
@@ -95,17 +90,29 @@ public class Device extends AbstractEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Device device = (Device) o;
-        return Objects.equals(linkAddress, device.linkAddress) &&
-                deviceType == device.deviceType &&
-                Objects.equals(modelNumber, device.modelNumber) &&
-                Objects.equals(description, device.description) &&
-                Objects.equals(details, device.details) &&
-                Objects.equals(building, device.building);
+        DeviceDto deviceDto = (DeviceDto) o;
+        return Objects.equals(linkAddress, deviceDto.linkAddress) &&
+                deviceType == deviceDto.deviceType &&
+                Objects.equals(modelNumber, deviceDto.modelNumber) &&
+                Objects.equals(description, deviceDto.description) &&
+                Objects.equals(details, deviceDto.details) &&
+                Objects.equals(building, deviceDto.building);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(linkAddress, deviceType, modelNumber, description, details, building);
+    }
+
+    @Override
+    public String toString() {
+        return "DeviceDto{" +
+                "linkAddress='" + linkAddress + '\'' +
+                ", deviceType=" + deviceType +
+                ", modelNumber='" + modelNumber + '\'' +
+                ", description='" + description + '\'' +
+                ", details=" + details +
+                ", building=" + building +
+                '}';
     }
 }

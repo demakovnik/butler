@@ -5,13 +5,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "areas")
-public class Area {
+public class Area extends AbstractEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
 
     private String address;
+
+    private String description;
 
     public Area(String address) {
         this.address = address;
@@ -23,12 +22,14 @@ public class Area {
     @OneToMany(mappedBy = "area", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Building> buildings;
 
-    public int getId() {
-        return id;
+
+
+    public String getDescription() {
+        return description;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getAddress() {

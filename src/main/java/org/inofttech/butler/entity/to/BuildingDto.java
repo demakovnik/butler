@@ -1,31 +1,28 @@
-package org.inofttech.butler.entity;
+package org.inofttech.butler.entity.to;
 
-import javax.persistence.*;
+import org.inofttech.butler.entity.Area;
+import org.inofttech.butler.entity.Device;
+
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "buildings")
-public class Building extends AbstractEntity {
+public class BuildingDto {
 
-    @Column(name = "description")
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "area_id")
     private Area area;
 
-    @OneToMany(mappedBy = "building",cascade = CascadeType.ALL)
     private Set<Device> devices;
 
-    public Building(String description) {
-
+    public BuildingDto(String description, Area area) {
         this.description = description;
+        this.area = area;
         devices = new HashSet<>();
     }
 
-    public Building() {
+    public BuildingDto() {
     }
+
 
     public String getDescription() {
         return description;
@@ -41,5 +38,13 @@ public class Building extends AbstractEntity {
 
     public void setArea(Area area) {
         this.area = area;
+    }
+
+    public Set<Device> getDevices() {
+        return devices;
+    }
+
+    public void setDevices(Set<Device> devices) {
+        this.devices = devices;
     }
 }

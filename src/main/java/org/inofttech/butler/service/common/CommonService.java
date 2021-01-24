@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface CommonService<E extends AbstractEntity> {
 
-    void save(E entity);
+    public E save(E entity);
 
     public List<E> getAll();
 
     public E getById(long id);
 
-    void deleteById(long id);
+    public void deleteById(long id);
 
 
 }

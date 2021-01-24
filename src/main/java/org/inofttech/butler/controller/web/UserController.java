@@ -1,4 +1,4 @@
-package org.inofttech.butler.controller;
+package org.inofttech.butler.controller.web;
 
 
 

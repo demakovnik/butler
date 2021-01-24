@@ -1,12 +1,9 @@
 package org.inofttech.butler.dao;
 
 
-
 import org.inofttech.butler.dao.common.CommonRepository;
 import org.inofttech.butler.entity.Device;
 import org.inofttech.butler.entity.DeviceType;
-import org.inofttech.butler.entity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

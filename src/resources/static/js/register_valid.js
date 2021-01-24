@@ -21,11 +21,10 @@ $(function () {
                 } else {
                     $.each(res.errorMessages, function (key, value) {
                         if (key == 'userExist') {
-                            $('li[name="section1"]').before('<div class="error alert alert-danger" role="alert">' + value + '</div>');
+                            $('li[name="section1"]').before('<div class="error alert alert-danger" style="z-index: 1000;" role="alert">' + value + '</div>');
                         } else {
                             $('input[name=' + key + ']').after('<span class="badge rounded-pill bg-warning">' + value + '</span>');
                         }
-
                     });
                 }
             }

@@ -19,10 +19,9 @@ public class Measurement {
     @Column(name = "value")
     private String value;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name="device_details_id")
     @JsonIgnore
-
     private TemporaryDeviceDetails details;
 
     public Measurement() {

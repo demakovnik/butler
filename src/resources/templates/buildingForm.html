@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new Building</title>
+</head>
+<body>
+<h1>Add new Building</h1>
+<form action="/addBuilding" method="post">
+    <p>Area: <select name="address">
+        <option th:each="area : ${allAreas}"
+                th:value="${area.address}" th:text="${area.address} + ' ('+${area.description}+')'"></option>
+    </select>
+    </p>
+    <p>Description: <input name="description" type="text"/></p>
+    <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+    <p th:text="${message}"/>
+    <span th:if="${errorMessage}" th:text="${errorMessage}"></span>
+</form>
+
+</body>
+</html>

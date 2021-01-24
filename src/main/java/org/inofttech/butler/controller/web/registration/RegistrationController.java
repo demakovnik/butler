@@ -1,4 +1,4 @@
-package org.inofttech.butler.controller;
+package org.inofttech.butler.controller.web.registration;
 
 
 import org.inofttech.butler.controller.common.AbstractController;
@@ -6,7 +6,7 @@ import org.inofttech.butler.entity.User;
 import org.inofttech.butler.entity.to.UserDto;
 import org.inofttech.butler.exception.UserAlreadyExistException;
 import org.inofttech.butler.service.UserService;
-import org.inofttech.butler.validation.UserResponse;
+import org.inofttech.butler.validation.ValidationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,9 +44,9 @@ public class RegistrationController extends AbstractController<User, UserService
 
     @PostMapping(value = "/registration", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public UserResponse registerUserAccount(@ModelAttribute("user") @Valid UserDto userDto,
-                                            BindingResult result) {
-        UserResponse userResponse = new UserResponse();
+    public ValidationResponse registerUserAccount(@ModelAttribute("user") @Valid UserDto userDto,
+                                                  BindingResult result) {
+        ValidationResponse validationResponse = new ValidationResponse();
         try {
             if (result.hasErrors()) {
                 Map<String, String> errors = result.getFieldErrors().stream()
@@ -54,43 +54,21 @@ public class RegistrationController extends AbstractController<User, UserService
                                 Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage)
                         );
 
-                userResponse.setValidated(false);
-                userResponse.setErrorMessages(errors);
+                validationResponse.setValidated(false);
+                validationResponse.setErrorMessages(errors);
             } else {
-                userResponse.setValidated(true);
+                validationResponse.setValidated(true);
                 service.save(userDto);
             }
         } catch (UserAlreadyExistException uaex) {
             Map<String, String> errors = new HashMap<>();
             errors.put("userExist", uaex.getMessage());
-            userResponse.setValidated(false);
-            userResponse.setErrorMessages(errors);
+            validationResponse.setValidated(false);
+            validationResponse.setErrorMessages(errors);
         }
         finally {
-            return userResponse;
+            return validationResponse;
         }
     }
-   /* public ModelAndView registerUserAccount(
-            @ModelAttribute("user") @Valid final UserDto userDto,
-            final BindingResult result,
-            HttpServletRequest httpServletRequest,
-            Errors errors) {
-        UserResponse response = new UserResponse();
-
-        try {
-            if (result.hasErrors()) {
-                ModelAndView modelAndView = new ModelAndView("login", "user", userDto);
-                return modelAndView;
-            }
-            User registered = userService.registerNewUserAccount(userDto);
-        } catch (UserAlreadyExistException uaeEx) {
-            ModelAndView mav = new ModelAndView("login", "user", userDto);
-            mav.addObject("message", "An account for that username already exists.");
-            return mav;
-        }
-
-        return new ModelAndView("login", "user", userDto);
-    }*/
-
 }
 
