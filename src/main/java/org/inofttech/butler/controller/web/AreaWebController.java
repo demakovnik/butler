@@ -2,10 +2,12 @@ package org.inofttech.butler.controller.web;
 
 import org.inofttech.butler.controller.common.AbstractController;
 import org.inofttech.butler.entity.Area;
+import org.inofttech.butler.entity.User;
 import org.inofttech.butler.entity.to.AreaDto;
 import org.inofttech.butler.entity.to.converter.AreaConverter;
 import org.inofttech.butler.exception.IncorrectDataItemException;
 import org.inofttech.butler.service.AreaService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,20 +20,19 @@ import javax.validation.Valid;
 @Controller
 public class AreaWebController extends AbstractController<Area, AreaService> {
 
-
     protected AreaWebController(AreaService service) {
         super(service);
     }
 
     @GetMapping("/addArea")
     public String addAreaForm(Model model) {
-            model.addAttribute("area", new AreaDto());
-
+        model.addAttribute("area", new AreaDto());
         return "areaForm";
     }
 
     @PostMapping("/addArea")
-    public String addNewArea(@ModelAttribute("area") AreaDto areaDto, Model model) {
+    public String addNewArea(@ModelAttribute("area") AreaDto areaDto,
+                             Model model) {
         try {
             AreaConverter areaConverter = new AreaConverter();
             Area area = areaConverter.getEntity(areaDto);
@@ -57,8 +58,8 @@ public class AreaWebController extends AbstractController<Area, AreaService> {
         areaDto.setDescription(area.getDescription());
         areaDto.setAddress(area.getAddress());
         model.addAttribute("area", areaDto);
-        model.addAttribute("action","/editArea");
-        model.addAttribute("areaId",id);
+        model.addAttribute("action", "/editArea");
+        model.addAttribute("areaId", id);
         return "areaForm";
     }
 
@@ -69,15 +70,15 @@ public class AreaWebController extends AbstractController<Area, AreaService> {
         area.setAddress(areaDto.getAddress());
         area.setDescription(areaDto.getDescription());
         service.update(area);
-        model.addAttribute("allAreas",service.getAll());
+        model.addAttribute("allAreas", service.getAll());
         return "settings";
     }
 
     @PostMapping("/deleteArea")
     public String deleteArea(@RequestParam("id") long id,
-                           Model model) {
+                             Model model) {
         service.deleteById(id);
-        model.addAttribute("allAreas",service.getAll());
+        model.addAttribute("allAreas", service.getAll());
         return "settings";
     }
 }

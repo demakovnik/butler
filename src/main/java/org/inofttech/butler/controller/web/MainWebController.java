@@ -13,8 +13,7 @@ public class MainWebController {
     AreaService areaService;
 
     @GetMapping("/")
-    public String addAreaForm(Model model) {
-        model.addAttribute("allAreas", areaService.getAll());
+    public String getIndexPage() {
         return "index";
     }
 
